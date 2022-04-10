@@ -1,0 +1,18 @@
+{
+  "name": "Discord Status Countdown",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "background": {
+    "scripts": ["background.ts"]
+  },
+  "browser_action": {
+    "default_icon": "icons/icon-48x48.png",
+    "default_title": "Discord Status Countdown",
+    "default_popup": "popup/menu.html"
+  },
+  "icons": {
+    "48": "icons/icon-48x48.png",
+    "128": "icons/icon-128x128.png"
+  },
+  "permissions": ["webRequest", "*://*.discord.com/*"]
+}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discord Status Countdown</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1 id="title">Discord Status Countdown</h1>
+
+    <p id="error-message"></p>
+
+    <form id="form">
+      <label for="datetime-input">Target Date and Time</label>
+      <input
+        type="datetime-local"
+        id="datetime-input"
+        name="datetime-input"
+        required
+      />
+
+      <label for="status-emoji-input">Status (Countdown Running)</label>
+
+      <div class="status-config">
+        <input
+          type="text"
+          id="status-emoji-input"
+          name="status-emoji-input"
+          placeholder="😂"
+          title="Emoji"
+        />
+        <input
+          type="text"
+          id="status-prefix-input"
+          name="status-prefix-input"
+          placeholder="T - "
+          title="Prefix"
+        />
+        <p id="status-time">00:00</p>
+        <input
+          type="text"
+          id="status-suffix-input"
+          name="status-suffix-input"
+          title="Suffix"
+        />
+      </div>
+
+      <label for="end-status-input">Status (Countdown Over)</label>
+      <input type="text" id="end-status-input" name="end-status-input" />
+
+      <label for="interval-input">Update Interval (In Seconds)</label>
+      <input
+        type="number"
+        id="interval-input"
+        name="interval-input"
+        min="5"
+        value="5"
+        required
+      />
+
+      <section class="buttons">
+        <input type="submit" value="Start Countdown" />
+        <button type="button" id="stop-countdown-button" disabled>
+          Stop Countdown
+        </button>
+      </section>
+    </form>
+
+    <small class="tos-warning">
+      Automating user accounts is against Discord's Terms of Service. Use at
+      your own risk!
+    </small>
+
+    <script type="module" src="popup.ts"></script>
+  </body>
+</html>
