@@ -6,6 +6,10 @@ A web extension to set your Discord status to a customizable countdown timer.
 
 Automating user accounts is against Discord's Terms of Service. Use at your own risk!
 
+## Screenshots
+
+![Popup Menu](https://i.imgur.com/JGYnebd.png)
+
 ## Installation
 
 ### Chrome
