@@ -1,7 +1,7 @@
 {
   "name": "discord-status-countdown",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "A web extension to set your Discord status to a customizable countdown timer.",
   "targets": {
     "webext-dev": {
       "sourceMap": {
@@ -16,17 +16,30 @@
     "lint": "prettier --write ./src",
     "build": "parcel build src/manifest.json --target webext-prod"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/younesaassila/discord-status-countdown.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "discord",
+    "discord-bot",
+    "web-extension"
+  ],
   "author": "Younes Aassila",
   "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/younesaassila/discord-status-countdown/issues"
+  },
+  "homepage": "https://github.com/younesaassila/discord-status-countdown#readme",
   "dependencies": {
-    "luxon": "^2.3.1"
+    "luxon": "^2.3.2"
   },
   "devDependencies": {
-    "@parcel/config-webextension": "^2.4.1",
+    "@parcel/config-webextension": "^2.5.0",
     "@types/luxon": "^2.3.1",
     "@types/webextension-polyfill": "^0.8.3",
-    "parcel": "^2.4.1",
+    "parcel": "^2.5.0",
     "prettier": "^2.6.2",
     "prettier-plugin-css-order": "^1.2.0",
     "typescript": "^4.6.3",
