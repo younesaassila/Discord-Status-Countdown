@@ -30,7 +30,7 @@ Automating user accounts is against Discord's Terms of Service. Use at your own 
 
 ## Usage
 
-- Log in to your Discord account on https://discord.com. Open the extension's menu (blue icon with an hourglass on top)
+- Log in to your Discord account on https://discord.com/app. Open the extension's menu (blue disk with an hourglass on top)
 - Configure your countdown
 - Click on 'Start Countdown'
 
@@ -39,4 +39,4 @@ To stop the countdown, simply click on 'Stop Countdown'
 ## Common Errors
 
 - `Your Discord token is unknown`
-  - Please refresh the https://discord.com webpage in your browser
+  - Please refresh the https://discord.com/app webpage in your browser
