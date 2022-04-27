@@ -1,15 +1,18 @@
 import browser from "webextension-polyfill"
+import Timer from "./lib/Timer"
 import { DateTime } from "luxon"
 import {
   Countdown,
   Message,
+  StartCountdownMessage,
+  StopCountdownMessage,
   CurrentCountdownMessage,
   ErrorMessage,
 } from "./types"
 
 let token = ""
 let countdown: Countdown
-let controller: AbortController
+let timer: Timer
 
 // Get the user's token to make custom status API requests.
 browser.webRequest.onSendHeaders.addListener(
@@ -29,44 +32,22 @@ browser.webRequest.onSendHeaders.addListener(
 browser.runtime.onMessage.addListener(async (message: Message) => {
   switch (message.type) {
     case "START_COUNTDOWN":
-      if (!message.payload.isoDateTime) {
-        const response: ErrorMessage = {
-          type: "ERROR",
-          payload: "Please enter a valid date and time",
-        }
-        return Promise.resolve(response)
-      }
-      if (!token) {
-        const response: ErrorMessage = {
-          type: "ERROR",
-          payload:
-            "Your Discord token is unknown. Please log in to or refresh discord.com",
-        }
-        return Promise.resolve(response)
-      }
-      startCountdown(message.payload)
-      break
+      return handleStartCountdownMessage(message)
     case "STOP_COUNTDOWN":
-      stopCountdown()
-      break
+      return handleStopCountdownMessage(message)
     case "CURRENT_COUNTDOWN":
-      const response: CurrentCountdownMessage = {
-        type: "CURRENT_COUNTDOWN",
-        payload: countdown,
-      }
-      return Promise.resolve(response)
+      return handleCurrentCountdownMessage(message)
     default:
       break
   }
 })
 
-function startCountdown(_countdown: Countdown) {
-  countdown = _countdown
+function startCountdown(payload: Countdown) {
+  countdown = payload
 
   const targetDateTime = DateTime.fromISO(countdown.isoDateTime)
-  controller = new AbortController()
 
-  async function callback() {
+  const callback = async () => {
     let diff = targetDateTime.diffNow(["seconds", "minutes", "hours", "days"])
 
     // Round to nearest divisible by interval.
@@ -100,15 +81,17 @@ function startCountdown(_countdown: Countdown) {
     await setStatus(countdown.statusEmoji, status)
   }
 
-  createInterval(countdown.interval * 1000, controller.signal, callback)
+  timer = new Timer(callback, countdown.interval * 1000)
+
   callback()
+  timer.start()
 }
 
 function stopCountdown() {
   setStatus(countdown.statusEmoji, countdown.endStatus)
-  controller.abort()
+  timer.stop()
   countdown = null
-  controller = null
+  timer = null
 }
 
 async function setStatus(emoji: string, status: string) {
@@ -145,25 +128,39 @@ async function setStatus(emoji: string, status: string) {
   }
 }
 
-// From https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95
-function createInterval(ms: number, signal: AbortSignal, callback: Function) {
-  const start = document.timeline
-    ? document.timeline.currentTime
-    : performance.now()
+//#region Message handlers
 
-  function frame(time: number) {
-    if (signal.aborted) return
-    callback(time)
-    scheduleFrame(time)
+function handleStartCountdownMessage(message: StartCountdownMessage) {
+  if (!message.payload.isoDateTime) {
+    const response: ErrorMessage = {
+      type: "ERROR",
+      payload: "Please enter a valid date and time",
+    }
+    return Promise.resolve(response)
+  }
+  if (!token) {
+    const response: ErrorMessage = {
+      type: "ERROR",
+      payload:
+        "Your Discord token is unknown. Please log in to or refresh discord.com",
+    }
+    return Promise.resolve(response)
   }
 
-  function scheduleFrame(time: number) {
-    const elapsed = time - start
-    const roundedElapsed = Math.round(elapsed / ms) * ms
-    const targetNext = start + roundedElapsed + ms
-    const delay = targetNext - performance.now()
-    setTimeout(() => requestAnimationFrame(frame), delay)
-  }
-
-  scheduleFrame(start)
+  return startCountdown(message.payload)
 }
+
+function handleStopCountdownMessage(_message: StopCountdownMessage) {
+  return stopCountdown()
+}
+
+function handleCurrentCountdownMessage(_message: CurrentCountdownMessage) {
+  const response: CurrentCountdownMessage = {
+    type: "CURRENT_COUNTDOWN",
+    payload: countdown,
+  }
+
+  return Promise.resolve(response)
+}
+
+//#endregion
