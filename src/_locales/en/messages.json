@@ -1,0 +1,27 @@
+{
+  "extensionName": {
+    "message": "Discord Status Countdown",
+    "description": "Name of the extension."
+  },
+  "extensionDescription": {
+    "message": "Set your Discord status to a customizable countdown timer.",
+    "description": "Description of the extension."
+  },
+
+  "errorInvalidDateTime": {
+    "message": "Please enter a valid date and time.",
+    "description": "The datetime input field is either empty or incomplete."
+  },
+  "errorInvalidInterval": {
+    "message": "Please enter a valid interval.",
+    "description": "The interval input field is empty."
+  },
+  "errorMissingToken": {
+    "message": "Your Discord token is unknown. Please log in to or refresh discord.com",
+    "description": "The user's Discord token is unknown."
+  },
+  "errorInvalidToken": {
+    "message": "Your Discord token is invalid. Please log in to or refresh discord.com",
+    "description": "The user's Discord token is invalid or has expired."
+  }
+}

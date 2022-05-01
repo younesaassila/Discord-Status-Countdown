@@ -1,74 +1,45 @@
 /**
- * Adapted from https://stackoverflow.com/a/55266303
+ * Adapted from https://gist.github.com/jakearchibald/cb03f15670817001b1157e62a076fe95
  */
 export default class Timer {
   private handler: Function
-  interval: number
+  interval: number // ms
 
-  private timeout: number
-  private expected: number
-  private driftHistory = []
-  private driftHistorySamples = 10
-  private driftCorrection = 0
+  private controller: AbortController
+  private startTime: number
 
   constructor(handler: Function, interval = 0) {
     this.handler = handler
     this.interval = interval
   }
 
-  set onstep(handler) {
-    this.handler = handler
-  }
-
   start() {
-    this.expected = Date.now() + this.interval
-    this.timeout = setTimeout(this.step.bind(this), this.interval)
+    this.controller = new AbortController()
+    // Prefer currentTime, as it'll better sync animations queued in the
+    // same frame, but if it isn't supported, performance.now() is fine.
+    this.startTime = document.timeline
+      ? document.timeline.currentTime
+      : performance.now()
+
+    setTimeout(this.step.bind(this), this.interval)
   }
 
   stop() {
-    clearTimeout(this.timeout)
-  }
-
-  private calculateDrift() {
-    const values = this.driftHistory.concat() // Copy array so it isn't mutated.
-    values.sort((a, b) => a - b)
-
-    if (values.length === 0) return 0
-
-    const half = Math.floor(values.length / 2)
-    let median: number
-
-    if (values.length % 2) median = values[half]
-    else median = (values[half - 1] + values[half]) / 2.0
-
-    return median
+    this.controller.abort()
   }
 
   private step() {
-    this.handler()
+    if (this.controller.signal.aborted) return
 
-    const drift = Date.now() - this.expected // The drift (positive for overshooting)
+    const currentTime = performance.now()
+    const elapsedTime = currentTime - this.startTime
+    const roundedElapsed =
+      Math.round(elapsedTime / this.interval) * this.interval
 
-    // Don't update the history for exceptionally large values.
-    if (drift <= this.interval) {
-      // Sample drift amount to history after removing current correction
-      // (add to remove because the correction is applied by subtraction)
-      this.driftHistory.push(drift + this.driftCorrection)
+    this.handler(elapsedTime)
 
-      // Predict new drift correction.
-      this.driftCorrection = this.calculateDrift()
-
-      // Cap and refresh samples.
-      if (this.driftHistory.length >= this.driftHistorySamples) {
-        this.driftHistory.shift()
-      }
-    }
-
-    this.expected += this.interval
-    // Take into account drift with prediction.
-    this.timeout = setTimeout(
-      this.step.bind(this),
-      Math.max(0, this.interval - drift - this.driftCorrection)
-    )
+    const targetNext = this.startTime + roundedElapsed + this.interval
+    const delay = targetNext - performance.now()
+    setTimeout(this.step.bind(this), delay)
   }
 }

@@ -1,7 +1,9 @@
 {
-  "name": "Discord Status Countdown",
-  "version": "1.1.0",
   "manifest_version": 2,
+  "default_locale": "en",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "version": "1.1.0",
   "background": {
     "scripts": ["background.ts"]
   },
