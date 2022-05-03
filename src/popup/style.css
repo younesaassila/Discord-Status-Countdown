@@ -12,6 +12,7 @@
   --text-primary: #ffffff;
   --text-secondary: #b9bbbe;
   --text-danger: #ed4245;
+  --text-link: #00aff4;
 
   --button-background-color: #686d73;
   --button-background-color-hover: #4f545c;
@@ -38,8 +39,24 @@ body:last-child {
   margin-bottom: 0;
 }
 
+a,
+a:visited {
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+a:hover,
+a:visited:hover {
+  text-decoration: underline;
+}
+
 input {
   background-color: var(--input-background-color);
+}
+
+input[type="text"]::placeholder {
+  color: var(--text-primary);
+  opacity: 0.5;
 }
 
 input,
@@ -111,7 +128,7 @@ label {
   font-size: 14px;
 }
 
-.status-config {
+.status-running-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -120,7 +137,7 @@ label {
   gap: var(--gap);
 }
 
-.status-config > input {
+.status-running-container > input {
   margin-bottom: 0;
 }
 

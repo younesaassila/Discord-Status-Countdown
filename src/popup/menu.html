@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Discord Status Countdown</title>
+    <title data-localize="__MSG_extensionName__">
+      Discord Status Countdown
+    </title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,12 +16,16 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <h1 id="title">Discord Status Countdown</h1>
+    <h1 id="title" data-localize="__MSG_extensionName__">
+      Discord Status Countdown
+    </h1>
 
     <p id="error-message"></p>
 
     <form id="form">
-      <label for="datetime-input">Target Date and Time</label>
+      <label for="datetime-input" data-localize="__MSG_labelDateTime__">
+        Target Date and Time
+      </label>
       <input
         type="datetime-local"
         id="datetime-input"
@@ -27,9 +33,14 @@
         required
       />
 
-      <label for="status-emoji-input">Status (Countdown Running)</label>
+      <label
+        for="status-emoji-input"
+        data-localize="__MSG_labelStatusWhenRunning__"
+      >
+        Status (Countdown Running)
+      </label>
 
-      <div class="status-config">
+      <div class="status-running-container">
         <input
           type="text"
           id="status-emoji-input"
@@ -53,10 +64,14 @@
         />
       </div>
 
-      <label for="end-status-input">Status (Countdown Over)</label>
-      <input type="text" id="end-status-input" name="end-status-input" />
+      <label for="status-end-input" data-localize="__MSG_labelStatusWhenOver__">
+        Status (Countdown Over)
+      </label>
+      <input type="text" id="status-end-input" name="status-end-input" />
 
-      <label for="interval-input">Update Interval (In Seconds)</label>
+      <label for="interval-input" data-localize="__MSG_labelInterval__">
+        Update Interval (In Seconds)
+      </label>
       <input
         type="number"
         id="interval-input"
@@ -67,8 +82,13 @@
       />
 
       <section class="buttons">
-        <input type="submit" value="Start Countdown" />
-        <button type="button" id="stop-countdown-button" disabled>
+        <input type="submit" value="__MSG_buttonStart__" data-localize />
+        <button
+          type="button"
+          id="stop-countdown-button"
+          data-localize="__MSG_buttonStop__"
+          disabled
+        >
           Stop Countdown
         </button>
       </section>
@@ -77,6 +97,11 @@
     <small class="tos-warning">
       Automating user accounts is against Discord's Terms of Service. Use at
       your own risk!
+      <a
+        href="https://support.discord.com/hc/en-us/articles/115002192352-Automated-user-accounts-self-bots-"
+      >
+        Learn more…
+      </a>
     </small>
 
     <script type="module" src="popup.ts"></script>

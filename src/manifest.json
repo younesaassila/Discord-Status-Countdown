@@ -1,18 +1,22 @@
 {
-  "name": "Discord Status Countdown",
-  "version": "1.0.0",
   "manifest_version": 2,
+  "default_locale": "en",
+  "name": "__MSG_extensionName__",
+  "description": "__MSG_extensionDescription__",
+  "version": "1.1.0",
   "background": {
     "scripts": ["background.ts"]
   },
   "browser_action": {
-    "default_icon": "icons/icon-48x48.png",
+    "default_icon": "icons/icon.png",
     "default_title": "Discord Status Countdown",
     "default_popup": "popup/menu.html"
   },
   "icons": {
-    "48": "icons/icon-48x48.png",
-    "128": "icons/icon-128x128.png"
+    "48": "icons/icon.png",
+    "96": "icons/icon@2x.png",
+    "144": "icons/icon@3x.png",
+    "192": "icons/icon@4x.png"
   },
   "permissions": ["webRequest", "*://*.discord.com/*"]
 }
