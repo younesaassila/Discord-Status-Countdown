@@ -25,18 +25,17 @@ browser.webRequest.onSendHeaders.addListener(
 browser.runtime.onMessage.addListener((message: Message) => {
   if (message.type === "current_status") {
     const countdownOptions: StatusCountdownOptions = {
-      isoDateTime: countdown.isoDateTime,
-      statusEmoji: countdown.statusEmoji,
-      statusPrefix: countdown.statusPrefix,
-      statusSuffix: countdown.statusSuffix,
-      statusEnd: countdown.statusEnd,
-      interval: countdown.interval,
+      isoDateTime: countdown?.isoDateTime,
+      statusEmoji: countdown?.statusEmoji,
+      statusPrefix: countdown?.statusPrefix,
+      statusSuffix: countdown?.statusSuffix,
+      statusEnd: countdown?.statusEnd,
+      interval: countdown?.interval,
     }
     const message: CurrentStatusMessage = {
       type: "current_status",
       payload: {
-        countdownOptions:
-          countdown != null && countdown.running ? countdownOptions : null,
+        countdownOptions: countdown?.running ? countdownOptions : null,
       },
     }
     return Promise.resolve(message)
