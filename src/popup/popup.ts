@@ -2,9 +2,9 @@ import { ChangeTypeOfKeys } from "../types"
 import { StatusCountdownOptions } from "../lib/StatusCountdown"
 import $ from "../utils/$"
 import browser from "webextension-polyfill"
-import CurrentStatusMessage from "../types/messages/current_status"
 import Message from "../types/message"
 import StartCountdownMessage from "../types/messages/start_countdown"
+import CurrentStatusMessage from "../types/messages/current_status"
 import StopCountdownMessage from "../types/messages/stop_countdown"
 
 const errorMessageElement = $("#error-message") as HTMLParagraphElement
