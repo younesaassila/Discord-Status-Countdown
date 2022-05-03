@@ -2,6 +2,7 @@ import { ChangeTypeOfKeys } from "../types"
 import { StatusCountdownOptions } from "../lib/StatusCountdown"
 import $ from "../utils/$"
 import browser from "webextension-polyfill"
+import localizeHTML from "../utils/localizeHTML"
 import Message from "../types/message"
 import StartCountdownMessage from "../types/messages/start_countdown"
 import CurrentStatusMessage from "../types/messages/current_status"
@@ -22,6 +23,7 @@ const inputElements: ChangeTypeOfKeys<
   interval: $("#interval-input") as HTMLInputElement,
 }
 
+window.addEventListener("DOMContentLoaded", localizeHTML)
 window.addEventListener("load", init)
 formElement.addEventListener("submit", startCountdown)
 stopCountdownButton.addEventListener("click", stopCountdown)
@@ -35,7 +37,6 @@ async function init() {
   const message: CurrentStatusMessage = {
     type: "current_status",
   }
-
   const response: Message = await browser.runtime.sendMessage(message)
   handleMessage(response, () => {
     if (response?.type === "current_status") {
@@ -57,11 +58,9 @@ async function startCountdown(e: SubmitEvent) {
   e.preventDefault()
 
   const formData = new FormData(formElement)
-
   const isoDateTime = formData.get("datetime-input").toString()
   if (!isoDateTime)
     return showError(browser.i18n.getMessage("errorInvalidDateTime"))
-
   const interval = parseInt(formData.get("interval-input").toString())
   if (!interval)
     return showError(browser.i18n.getMessage("errorInvalidInterval"))
@@ -77,7 +76,6 @@ async function startCountdown(e: SubmitEvent) {
       interval,
     },
   }
-
   const response: Message = await browser.runtime.sendMessage(message)
   handleMessage(response, () => setRunningMode(true))
 }
@@ -86,7 +84,6 @@ async function stopCountdown() {
   const message: StopCountdownMessage = {
     type: "stop_countdown",
   }
-
   const response: Message = await browser.runtime.sendMessage(message)
   handleMessage(response, () => setRunningMode(false))
 }
