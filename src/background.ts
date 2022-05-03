@@ -35,7 +35,8 @@ browser.runtime.onMessage.addListener((message: Message) => {
     const message: CurrentStatusMessage = {
       type: "current_status",
       payload: {
-        countdownOptions: countdown != null ? countdownOptions : null,
+        countdownOptions:
+          countdown != null && countdown.running ? countdownOptions : null,
       },
     }
     return Promise.resolve(message)

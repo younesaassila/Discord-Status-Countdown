@@ -22,6 +22,7 @@ export default class StatusCountdown {
 
   private token: string
   private timer: Timer
+  private _running = false
 
   constructor(options: StatusCountdownOptions, token: string) {
     this.isoDateTime = options.isoDateTime
@@ -34,7 +35,13 @@ export default class StatusCountdown {
     this.token = token
   }
 
+  get running() {
+    return this._running
+  }
+
   start() {
+    this._running = true
+
     const targetDateTime = DateTime.fromISO(this.isoDateTime)
 
     const callback = async () => {
@@ -75,6 +82,8 @@ export default class StatusCountdown {
   }
 
   stop() {
+    this._running = false
+
     this.timer.stop()
     this.setStatus(this.statusEmoji, this.statusEnd)
   }
