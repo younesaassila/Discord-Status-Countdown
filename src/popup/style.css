@@ -128,7 +128,7 @@ label {
   font-size: 14px;
 }
 
-.status-config {
+.status-running-container {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -137,7 +137,7 @@ label {
   gap: var(--gap);
 }
 
-.status-config > input {
+.status-running-container > input {
   margin-bottom: 0;
 }
 
