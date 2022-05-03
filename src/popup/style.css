@@ -12,6 +12,7 @@
   --text-primary: #ffffff;
   --text-secondary: #b9bbbe;
   --text-danger: #ed4245;
+  --text-link: #00aff4;
 
   --button-background-color: #686d73;
   --button-background-color-hover: #4f545c;
@@ -36,6 +37,17 @@ body {
 
 body:last-child {
   margin-bottom: 0;
+}
+
+a,
+a:visited {
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+a:hover,
+a:visited:hover {
+  text-decoration: underline;
 }
 
 input {
