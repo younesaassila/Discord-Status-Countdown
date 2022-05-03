@@ -2,6 +2,8 @@
 
 A web extension to set your Discord status to a customizable countdown timer.
 
+[Add to Firefox (Add-ons Store)](https://addons.mozilla.org/en-US/firefox/addon/discord-status-countdown/)
+
 ## Warning
 
 Automating user accounts is against Discord's Terms of Service. Use at your own risk!
