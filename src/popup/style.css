@@ -54,6 +54,11 @@ input {
   background-color: var(--input-background-color);
 }
 
+input[type="text"]::placeholder {
+  color: var(--text-primary);
+  opacity: 0.5;
+}
+
 input,
 button {
   display: block;
