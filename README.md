@@ -32,7 +32,7 @@ Automating user accounts is against Discord's Terms of Service. Use at your own 
 
 ## Usage
 
-- Log in to your Discord account on https://discord.com/app. Open the extension's menu (blue disk with an hourglass on top)
+- Log in to your Discord account on https://discord.com/app. Open the extension's menu (blue hourglass)
 - Configure your countdown timer
 - Click on 'Start Countdown'
 
