@@ -11,7 +11,7 @@ Automating user accounts is against Discord's Terms of Service. Use at your own 
 ## Screenshots
 
 <div align="center">
-  <img src="https://i.imgur.com/Wp3AIt4.png" alt="Popup Menu" height="500px" style="border-radius: 6px" />
+  <img src="https://i.imgur.com/Wp3AIt4.png" alt="Popup Menu" height="500px" />
 </div>
 
 ## Installation
@@ -26,6 +26,8 @@ Automating user accounts is against Discord's Terms of Service. Use at your own 
 1. Select the unzipped folder you just created
 
 ### Firefox
+
+**Recommended:** [Download from the Add-ons Store](https://addons.mozilla.org/en-US/firefox/addon/discord-status-countdown/)
 
 1. Download the latest version in the "Releases" section (ZIP file)
 1. Go to `about:debugging#/runtime/this-firefox`
