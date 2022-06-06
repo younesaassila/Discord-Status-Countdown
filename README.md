@@ -10,7 +10,9 @@ Automating user accounts is against Discord's Terms of Service. Use at your own 
 
 ## Screenshots
 
-![Popup Menu](https://i.imgur.com/JGYnebd.png)
+<div align="center">
+  <img src="https://i.imgur.com/Wp3AIt4.png" alt="Popup Menu" height="500px" style="border-radius: 6px" />
+</div>
 
 ## Installation
 
