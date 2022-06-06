@@ -47,14 +47,16 @@ export default class StatusCountdown {
     const callback = async () => {
       let diff = targetDateTime.diffNow(["seconds", "minutes", "hours", "days"])
 
-      // Round to nearest divisible by interval.
+      // Round second to nearest divisible by interval.
       if (
         Math.abs(diff.seconds % this.interval) < Math.ceil(this.interval / 2)
       ) {
+        // Round down
         diff = diff.set({
           seconds: diff.seconds - (diff.seconds % this.interval),
         })
       } else {
+        // Round up
         diff = diff.set({
           seconds:
             Math.sign(diff.seconds) *
@@ -63,7 +65,7 @@ export default class StatusCountdown {
         })
       }
 
-      if (diff.seconds <= 0) return this.stop()
+      if (diff.toMillis() <= 0) return this.stop()
 
       const timeString =
         diff.days > 0
