@@ -1,6 +1,6 @@
 {
   "name": "discord-status-countdown",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A web extension to set your Discord status to a customizable countdown timer.",
   "targets": {
     "webext-dev": {
