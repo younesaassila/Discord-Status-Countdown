@@ -6,6 +6,17 @@ import ErrorMessage from "./types/messages/error"
 
 let token = ""
 let countdown: StatusCountdown
+;(async () => {
+  const storage = await browser.storage.local.get({
+    token: "",
+    countdownOptions: null,
+  })
+  token = storage.token
+  if (countdown == null && storage.countdownOptions != null) {
+    countdown = new StatusCountdown(storage.countdownOptions, token)
+    countdown.start()
+  }
+})()
 
 // Get the user's token to make custom status API requests.
 browser.webRequest.onSendHeaders.addListener(
@@ -13,7 +24,8 @@ browser.webRequest.onSendHeaders.addListener(
     const authorizationHeader = details.requestHeaders.find(
       header => header.name.toLowerCase() === "authorization"
     )
-    if (authorizationHeader) {
+    if (authorizationHeader && token != authorizationHeader.value) {
+      browser.storage.local.set({ token: authorizationHeader.value })
       token = authorizationHeader.value
     }
   },
@@ -35,7 +47,8 @@ browser.runtime.onMessage.addListener((message: Message) => {
     const message: CurrentStatusMessage = {
       type: "current_status",
       payload: {
-        countdownOptions: countdown?.running ? countdownOptions : null,
+        countdownOptions: countdownOptions,
+        countdownRunning: countdown?.running,
       },
     }
     return Promise.resolve(message)
@@ -50,11 +63,13 @@ browser.runtime.onMessage.addListener((message: Message) => {
       return Promise.resolve(message)
     }
 
+    browser.storage.local.set({ countdownOptions: message.payload })
     countdown = new StatusCountdown(message.payload, token)
     countdown.start()
   }
 
   if (message.type === "stop_countdown") {
+    browser.storage.local.set({ countdownOptions: null })
     countdown.stop()
   }
 })

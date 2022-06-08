@@ -18,5 +18,5 @@
     "144": "icons/icon@3x.png",
     "192": "icons/icon@4x.png"
   },
-  "permissions": ["webRequest", "*://*.discord.com/*"]
+  "permissions": ["storage", "webRequest", "*://*.discord.com/*"]
 }

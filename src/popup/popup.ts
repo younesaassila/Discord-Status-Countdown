@@ -47,9 +47,8 @@ async function init() {
           const inputElement: HTMLInputElement = inputElements[key]
           if (inputElement != null) inputElement.value = value
         }
-
-        setRunningMode(true)
       }
+      if (response?.payload.countdownRunning) setRunningMode(true)
     }
   })
 }
