@@ -3,7 +3,7 @@
   "default_locale": "en",
   "name": "__MSG_extensionName__",
   "description": "__MSG_extensionDescription__",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "background": {
     "scripts": ["background.ts"]
   },
@@ -18,5 +18,5 @@
     "144": "icons/icon@3x.png",
     "192": "icons/icon@4x.png"
   },
-  "permissions": ["webRequest", "*://*.discord.com/*"]
+  "permissions": ["storage", "webRequest", "*://*.discord.com/*"]
 }
