@@ -5,7 +5,7 @@ import CurrentStatusMessage from "./types/messages/current_status"
 import ErrorMessage from "./types/messages/error"
 
 let token = ""
-let countdown: StatusCountdown
+let countdown: StatusCountdown | null = null
 ;(async () => {
   const storage = await browser.storage.local.get({
     token: "",
@@ -21,12 +21,12 @@ let countdown: StatusCountdown
 // Get the user's token to make custom status API requests.
 browser.webRequest.onSendHeaders.addListener(
   details => {
-    const authorizationHeader = details.requestHeaders.find(
+    const authorizationHeader = details.requestHeaders?.find(
       header => header.name.toLowerCase() === "authorization"
     )
     if (authorizationHeader && token != authorizationHeader.value) {
       browser.storage.local.set({ token: authorizationHeader.value })
-      token = authorizationHeader.value
+      token = authorizationHeader.value ?? ""
     }
   },
   { urls: ["*://*.discord.com/api/*"] },
@@ -36,31 +36,38 @@ browser.webRequest.onSendHeaders.addListener(
 // Listen for messages from the popup.
 browser.runtime.onMessage.addListener((message: Message) => {
   if (message.type === "current_status") {
-    const countdownOptions: StatusCountdownOptions = {
-      isoDateTime: countdown?.isoDateTime,
-      statusEmoji: countdown?.statusEmoji,
-      statusPrefix: countdown?.statusPrefix,
-      statusSuffix: countdown?.statusSuffix,
-      statusEnd: countdown?.statusEnd,
-      interval: countdown?.interval,
+    if (!countdown) {
+      return Promise.resolve({
+        type: "current_status",
+        payload: {
+          countdownOptions: null,
+          countdownRunning: false,
+        },
+      } as CurrentStatusMessage)
     }
-    const message: CurrentStatusMessage = {
+    const countdownOptions: StatusCountdownOptions = {
+      isoDateTime: countdown.isoDateTime,
+      statusEmoji: countdown.statusEmoji,
+      statusPrefix: countdown.statusPrefix,
+      statusSuffix: countdown.statusSuffix,
+      statusEnd: countdown.statusEnd,
+      interval: countdown.interval,
+    }
+    return Promise.resolve({
       type: "current_status",
       payload: {
         countdownOptions: countdownOptions,
-        countdownRunning: countdown?.running,
+        countdownRunning: countdown.running,
       },
-    }
-    return Promise.resolve(message)
+    } as CurrentStatusMessage)
   }
 
   if (message.type === "start_countdown") {
     if (!token) {
-      const message: ErrorMessage = {
+      return Promise.resolve({
         type: "error",
         payload: browser.i18n.getMessage("errorMissingToken"),
-      }
-      return Promise.resolve(message)
+      } as ErrorMessage)
     }
 
     browser.storage.local.set({ countdownOptions: message.payload })
@@ -70,6 +77,6 @@ browser.runtime.onMessage.addListener((message: Message) => {
 
   if (message.type === "stop_countdown") {
     browser.storage.local.set({ countdownOptions: null })
-    countdown.stop()
+    countdown?.stop()
   }
 })

@@ -17,9 +17,7 @@ export default class Timer {
     this.controller = new AbortController()
     // Prefer currentTime, as it'll better sync animations queued in the
     // same frame, but if it isn't supported, performance.now() is fine.
-    this.startTime = document.timeline
-      ? document.timeline.currentTime
-      : performance.now()
+    this.startTime = document.timeline?.currentTime ?? performance.now()
 
     setTimeout(this.step.bind(this), this.interval)
   }

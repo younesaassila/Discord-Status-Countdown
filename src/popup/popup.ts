@@ -39,16 +39,16 @@ async function init() {
   }
   const response: Message = await browser.runtime.sendMessage(message)
   handleMessage(response, () => {
-    if (response?.type === "current_status") {
-      if (response?.payload.countdownOptions != null) {
+    if (response.type === "current_status") {
+      if (response.payload!.countdownOptions != null) {
         for (const [key, value] of Object.entries(
-          response.payload.countdownOptions
+          response.payload!.countdownOptions
         )) {
           const inputElement: HTMLInputElement = inputElements[key]
           if (inputElement != null) inputElement.value = value
         }
       }
-      if (response?.payload.countdownRunning) setRunningMode(true)
+      if (response.payload!.countdownRunning) setRunningMode(true)
     }
   })
 }
@@ -57,10 +57,10 @@ async function startCountdown(e: SubmitEvent) {
   e.preventDefault()
 
   const formData = new FormData(formElement)
-  const isoDateTime = formData.get("datetime-input").toString()
+  const isoDateTime = formData.get("datetime-input")!.toString()
   if (!isoDateTime)
     return showError(browser.i18n.getMessage("errorInvalidDateTime"))
-  const interval = parseInt(formData.get("interval-input").toString())
+  const interval = parseInt(formData.get("interval-input")!.toString())
   if (!interval)
     return showError(browser.i18n.getMessage("errorInvalidInterval"))
 
@@ -68,14 +68,16 @@ async function startCountdown(e: SubmitEvent) {
     type: "start_countdown",
     payload: {
       isoDateTime,
-      statusEmoji: formData.get("status-emoji-input").toString(),
-      statusPrefix: formData.get("status-prefix-input").toString(),
-      statusSuffix: formData.get("status-suffix-input").toString(),
-      statusEnd: formData.get("status-end-input").toString(),
+      statusEmoji: formData.get("status-emoji-input")!.toString(),
+      statusPrefix: formData.get("status-prefix-input")!.toString(),
+      statusSuffix: formData.get("status-suffix-input")!.toString(),
+      statusEnd: formData.get("status-end-input")!.toString(),
       interval,
     },
   }
-  const response: Message = await browser.runtime.sendMessage(message)
+  const response: Message | undefined = await browser.runtime.sendMessage(
+    message
+  )
   handleMessage(response, () => setRunningMode(true))
 }
 
@@ -83,7 +85,9 @@ async function stopCountdown() {
   const message: StopCountdownMessage = {
     type: "stop_countdown",
   }
-  const response: Message = await browser.runtime.sendMessage(message)
+  const response: Message | undefined = await browser.runtime.sendMessage(
+    message
+  )
   handleMessage(response, () => setRunningMode(false))
 }
 
@@ -94,7 +98,7 @@ function setRunningMode(running: boolean) {
   stopCountdownButton.disabled = !running
 }
 
-function showError(message: string) {
+function showError(message: string | null) {
   if (!message) {
     errorMessageElement.textContent = ""
   } else {
@@ -103,7 +107,7 @@ function showError(message: string) {
 }
 
 function handleMessage(
-  response: Message,
+  response: Message | undefined,
   onSuccess?: Function,
   onError?: Function
 ) {
